@@ -1,56 +1,50 @@
 import React, { Component } from 'react';
-import {BrowserRouter as Router} from 'react-router-dom';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {connect} from 'react-redux'
 
-import Main from './Main'
-import Header from './Header'
-import {initHero} from '../actions/dotaHeroAction'
-import {initTeam} from '../actions/teamHeroAction'
+import User from '../components/User.js'
+import Main from '../components/Main.js'
+import AddAge from '../components/AddAge.js'
+import {setName, setAge} from '../actions/userActions'
 
-const stylingapp={
-    textAlign: "center",
-    
-  }
+
+
 class App extends Component {
+  constructor(){
+    super();
 
-    componentDidMount(){
-      this.props.initHero()
-      this.props.initTeam()
-      
-}
+  }
 
-  
+  changeUsername(newName){
+  }
 
   render() {
     return (
-      <MuiThemeProvider>
-      <div  style={stylingapp}>
-        <Router>
       <div>
-        <Header />
-        <Main />
+      <Main changeUsername={() => this.props.setName("Ivan")}/>
+      <AddAge changeAge={() => this.props.setAge(30)}/>
+      <User username={this.props.user.name}/>
       </div>
-      </Router>
-      </div>
-      </MuiThemeProvider>
-    );
+    )
+  }
+}
 
-    
-
+const mapStateToProps = (state) => {
+  return{
+    user: state.user,
+    math: state.math
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return{
-    initHero:()=>{
-      dispatch(initHero())
+    setName:(name)=>{
+      dispatch(setName(name ))
     },
-    initTeam:()=>{
-      dispatch(initTeam())
+    setAge:(number)=>{
+      dispatch(setAge(number))
     }
   }
 }
 
 
-export default connect(null,mapDispatchToProps)(App);
+export default connect(mapStateToProps,mapDispatchToProps)(App)
